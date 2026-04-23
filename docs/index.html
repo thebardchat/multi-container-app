@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multi-Container App — ShaneBrain Ecosystem</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0d1117; color: #e6edf3; font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.6; }
+  .hero { background: linear-gradient(135deg, #161b22 0%, #1c2128 100%); border-bottom: 1px solid #30363d; padding: 60px 24px 48px; text-align: center; }
+  h1 { font-size: 2.4rem; font-weight: 700; color: #d2a8ff; margin-bottom: 12px; }
+  .tagline { font-size: 1.1rem; color: #8b949e; max-width: 600px; margin: 0 auto 32px; }
+  .badge { display: inline-block; background: #21262d; border: 1px solid #30363d; border-radius: 6px; padding: 6px 14px; margin: 4px; font-size: 0.85rem; color: #c9d1d9; }
+  .cta { display: inline-block; background: #6e40c9; color: #fff; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; margin: 8px; }
+  .cta:hover { background: #8957e5; }
+  .cta.secondary { background: #21262d; border: 1px solid #30363d; }
+  .cta.secondary:hover { background: #30363d; }
+  .container { max-width: 960px; margin: 0 auto; padding: 48px 24px; }
+  .section { margin-bottom: 48px; }
+  h2 { font-size: 1.5rem; color: #f0f6fc; margin-bottom: 20px; padding-bottom: 8px; border-bottom: 1px solid #30363d; }
+  .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .feature { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 20px; }
+  .feature h3 { color: #d2a8ff; margin-bottom: 8px; font-size: 1rem; }
+  .feature p { color: #8b949e; font-size: 0.9rem; }
+  .stack { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag { background: #1c2128; border: 1px solid #30363d; border-radius: 20px; padding: 4px 12px; font-size: 0.8rem; color: #d2a8ff; }
+  .ecosystem { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+  .eco-card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 16px; text-decoration: none; transition: border-color 0.2s; }
+  .eco-card:hover { border-color: #d2a8ff; }
+  .eco-card h4 { color: #d2a8ff; font-size: 0.9rem; margin-bottom: 4px; }
+  .eco-card p { color: #8b949e; font-size: 0.8rem; }
+  footer { background: #161b22; border-top: 1px solid #30363d; padding: 32px 24px; text-align: center; color: #8b949e; font-size: 0.9rem; }
+  footer a { color: #d2a8ff; text-decoration: none; }
+  .referral { background: #0d1117; border: 1px solid #238636; border-radius: 8px; padding: 16px; margin: 32px 0; text-align: center; }
+  .referral a { color: #3fb950; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+<h1>multi-container-app</h1>
+<p class="tagline">Simple multi-container Docker app (Node.js + MongoDB) — a clean, working starting template for containerized web services. Start building in under a minute.</p>
+<div>
+  <a href="https://github.com/thebardchat/multi-container-app" class="cta">View on GitHub</a>
+  <a href="https://github.com/thebardchat/treasures" class="cta secondary">Treasures Hub</a>
+</div>
+<div style="margin-top:20px;">
+  <span class="badge">Docker</span>
+  <span class="badge">Node.js</span>
+  <span class="badge">MongoDB</span>
+  <span class="badge">docker-compose</span>
+</div>
+</div>
+
+<div class="container">
+
+<div class="section">
+<h2>Get Started in 30 Seconds</h2>
+<pre style="background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px;color:#c9d1d9;overflow-x:auto;">git clone https://github.com/thebardchat/multi-container-app.git
+cd multi-container-app
+docker compose up -d
+# Open http://localhost:3000</pre>
+</div>
+
+<div class="section">
+<h2>What's Included</h2>
+<div class="features">
+  <div class="feature">
+    <h3>Node.js App</h3>
+    <p>Express-based web application with EJS templating. Pre-wired to MongoDB, ready to extend with your routes and models.</p>
+  </div>
+  <div class="feature">
+    <h3>MongoDB Container</h3>
+    <p>MongoDB spun up as a companion container. Pre-configured connection string, persistent volume, zero setup required.</p>
+  </div>
+  <div class="feature">
+    <h3>Docker Compose</h3>
+    <p>Single <code>compose.yaml</code> brings up the full stack. Development and production ready from day one.</p>
+  </div>
+  <div class="feature">
+    <h3>Todo App Demo</h3>
+    <p>Fully functional todo application demonstrates the full CRUD cycle — add, list, complete, delete — using the real stack.</p>
+  </div>
+</div>
+</div>
+
+<div class="section">
+<h2>Tech Stack</h2>
+<div class="stack">
+  <span class="tag">Docker</span>
+  <span class="tag">docker-compose</span>
+  <span class="tag">Node.js</span>
+  <span class="tag">Express</span>
+  <span class="tag">MongoDB</span>
+  <span class="tag">EJS Templates</span>
+  <span class="tag">Dockerfile</span>
+</div>
+</div>
+
+<div class="section">
+<h2>ShaneBrain Ecosystem</h2>
+<div class="ecosystem">
+  <a href="https://thebardchat.github.io/AI-Trainer-MAX/" class="eco-card">
+    <h4>AI-Trainer-MAX</h4>
+    <p>5-phase local AI training curriculum for non-technical users</p>
+  </a>
+  <a href="https://thebardchat.github.io/angelcloud-actual/" class="eco-card">
+    <h4>angelcloud-actual</h4>
+    <p>Angel Cloud platform — Firebase, Pulsar security, logistics API</p>
+  </a>
+  <a href="https://thebardchat.github.io/thought-tree/" class="eco-card">
+    <h4>thought-tree</h4>
+    <p>React visual thought browser with Weaviate + Ollama semantic search</p>
+  </a>
+  <a href="https://thebardchat.github.io/srm-dispatch/" class="eco-card">
+    <h4>srm-dispatch</h4>
+    <p>SRM Concrete North Alabama daily dispatch tool — React PWA</p>
+  </a>
+  <a href="https://thebardchat.github.io/mini-shanebrain/" class="eco-card">
+    <h4>mini-shanebrain</h4>
+    <p>Multi-platform social bot framework (X, FB, LinkedIn, etc.)</p>
+  </a>
+  <a href="https://thebardchat.github.io/shanebrain-learning/" class="eco-card">
+    <h4>shanebrain-learning</h4>
+    <p>Auto-learning inbox pipeline — drop files in, ingest to Weaviate</p>
+  </a>
+  <a href="https://github.com/thebardchat/treasures" class="eco-card">
+    <h4>treasures</h4>
+    <p>ShaneBrain recovered artifacts hub — scripts, projects, creative</p>
+  </a>
+</div>
+</div>
+
+<div class="referral">
+  Built with <a href="https://claude.ai/referral/4fAMYN9Ing">Claude + ShaneBrain</a> — AI tools for humans who build.
+</div>
+
+</div>
+
+<footer>
+  <p>Built by <strong>Shane Brazelton + Claude Anthropic</strong> | ShaneBrain Ecosystem | Hazel Green, AL</p>
+  <p style="margin-top:8px;"><a href="https://github.com/thebardchat">github.com/thebardchat</a> · <a href="https://claude.ai/referral/4fAMYN9Ing">Try Claude free →</a></p>
+</footer>
+
+</body>
+</html>
