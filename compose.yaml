@@ -13,8 +13,8 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     ports:
-      - 3000:3000
-      - 35729:35729
+      - "${APP_PORT:-3000}:3000"
+      - "${LIVERELOAD_PORT:-35729}:35729"
     develop:
       watch:
         - path: ./app/package.json
