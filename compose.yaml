@@ -1,13 +1,3 @@
-# Comments are provided throughout this file to help you get started.
-# If you need more help, visit the Docker compose reference guide at
-# https://docs.docker.com/compose/compose-file/
-
-# Here the instructions define your application as two services called "todo-app" and “todo-database”
-# The service “todo-app” is built from the Dockerfile in the /app directory,
-# and the service “todo-database” uses the official MongoDB image 
-# from Docker Hub - https://hub.docker.com/_/mongo. 
-# You can add other services your application may depend on here.
-
 services:
   todo-app:
     build:
@@ -16,6 +6,12 @@ services:
       - todo-database
     environment:
       NODE_ENV: production
+      OLLAMA_URL: ${OLLAMA_URL:-http://host.docker.internal:11434}
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-llama3.2:1b}
+      EMBED_MODEL: ${EMBED_MODEL:-nomic-embed-text}
+      WEAVIATE_URL: ${WEAVIATE_URL:-http://host.docker.internal:8080}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - 3000:3000
       - 35729:35729

@@ -4,79 +4,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo App</title>
+    <title>Todo App · ShaneBrain</title>
     <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
-        .todo-done .task-text { text-decoration: line-through; color: #aaa; }
-        .todo-item { border-bottom: 1px solid #f1f1f1; padding: 10px 0; }
+        body { background: #f4f6f9; }
+        .app-card { max-width: 640px; margin: 40px auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 16px rgba(0,0,0,.08); padding: 28px; }
+        .todo-item { border-bottom: 1px solid #f0f0f0; padding: 10px 0; }
         .todo-item:last-child { border-bottom: none; }
-        .check-btn { cursor: pointer; border: none; background: none; padding: 0 10px 0 0; font-size: 1.2rem; color: #28a745; }
-        .check-btn.done { color: #6c757d; }
+        .todo-done .task-text { text-decoration: line-through; color: #aaa; }
+        .todo-done .hint-text { color: #ccc; }
+        .check-btn { cursor: pointer; border: none; background: none; padding: 0 10px 0 0; font-size: 1.2rem; color: #28a745; line-height: 1; }
+        .check-btn.done { color: #aaa; }
+        .hint-text { font-size: 0.78rem; color: #888; margin-top: 2px; font-style: italic; }
+        .hint-text i { color: #6c63ff; margin-right: 4px; }
+        .search-active { background: #fff8e1; border: 1px solid #ffe082; border-radius: 8px; padding: 8px 12px; margin-bottom: 12px; font-size: 0.88rem; color: #795548; }
+        .ai-badge { font-size: 0.7rem; background: #ede7f6; color: #6c63ff; border-radius: 4px; padding: 1px 6px; vertical-align: middle; margin-left: 4px; }
     </style>
 </head>
 
 <body>
-    <div class="container m-5 p-2 rounded mx-auto bg-light shadow" style="max-width:640px;">
+    <div class="app-card">
 
-        <div class="row m-1 p-4">
-            <div class="col text-center">
-                <h1 class="text-primary"><u>Todo App</u></h1>
-            </div>
+        <div class="text-center mb-3">
+            <h1 class="text-primary h3 mb-0"><u>Todo App</u></h1>
+            <small class="text-muted">ShaneBrain · Hazel Green, AL</small>
         </div>
 
-        <div class="row m-1 p-3">
-            <div class="col">
-                <form method="POST" action="/" autocomplete="off">
-                    <div class="row bg-white rounded shadow-sm p-2 align-items-center">
-                        <div class="col">
-                            <input class="form-control form-control-lg border-0 bg-transparent"
-                                type="text" name="task" placeholder="Add new task…">
-                        </div>
-                        <div class="col-auto pr-2">
-                            <button type="submit" class="btn btn-primary">Add</button>
-                        </div>
-                    </div>
-                </form>
+        <!-- Add task -->
+        <form method="POST" action="/" autocomplete="off" class="mb-3">
+            <div class="row bg-light rounded p-2 align-items-center">
+                <div class="col">
+                    <input class="form-control form-control-lg border-0 bg-transparent"
+                        type="text" name="task" placeholder="Add a task — AI will suggest your first step…">
+                </div>
+                <div class="col-auto pr-2">
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+            </div>
+        </form>
 
-                <hr>
+        <!-- Search -->
+        <form method="GET" action="/" autocomplete="off" class="mb-3">
+            <div class="input-group input-group-sm">
+                <input class="form-control" type="text" name="q"
+                    value="<%= q %>" placeholder="Semantic search — powered by Ollama + Weaviate…">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-outline-secondary"><i class="fa fa-search"></i></button>
+                    <% if (q) { %>
+                        <a href="/" class="btn btn-outline-secondary"><i class="fa fa-times"></i></a>
+                    <% } %>
+                </div>
+            </div>
+        </form>
 
-                <% if (tasks.length > 0) { %>
-                    <ul class="list-unstyled mb-0">
-                        <% tasks.forEach(todo => { %>
-                            <li class="todo-item d-flex justify-content-between align-items-start <%= todo.completed ? 'todo-done' : '' %>">
-                                <div class="d-flex align-items-start">
-                                    <form method="POST" action="/todo/toggle">
-                                        <input type="hidden" name="_key" value="<%= todo._id %>">
-                                        <button type="submit" class="check-btn <%= todo.completed ? 'done' : '' %>"
-                                            title="<%= todo.completed ? 'Mark incomplete' : 'Mark complete' %>">
-                                            <i class="fa <%= todo.completed ? 'fa-check-circle' : 'fa-circle-o' %>"></i>
-                                        </button>
-                                    </form>
-                                    <div>
-                                        <span class="task-text"><%= todo.task %></span>
-                                        <p class="text-muted mb-0"><small><%= moment(todo.created_at).fromNow() %></small></p>
-                                    </div>
-                                </div>
-                                <form method="POST" action="/todo/destroy" class="ml-2">
-                                    <input type="hidden" name="_key" value="<%= todo._id %>">
-                                    <button type="submit" class="btn btn-link text-danger p-0" title="Delete">
-                                        <i class="fa fa-trash-o"></i>
-                                    </button>
-                                </form>
-                            </li>
-                        <% }) %>
-                    </ul>
+        <% if (q) { %>
+            <div class="search-active">
+                <i class="fa fa-bolt"></i> Semantic results for: <strong><%= q %></strong>
+                <span class="ai-badge">Ollama + Weaviate</span>
+            </div>
+        <% } %>
+
+        <hr class="mt-1 mb-2">
+
+        <!-- Task list -->
+        <% if (tasks.length > 0) { %>
+            <ul class="list-unstyled mb-0">
+                <% tasks.forEach(todo => { %>
+                    <li class="todo-item d-flex justify-content-between align-items-start <%= todo.completed ? 'todo-done' : '' %>">
+                        <div class="d-flex align-items-start">
+                            <form method="POST" action="/todo/toggle">
+                                <input type="hidden" name="_key" value="<%= todo._id %>">
+                                <% if (q) { %><input type="hidden" name="_referer" value="/?q=<%= encodeURIComponent(q) %>"><% } %>
+                                <button type="submit" class="check-btn <%= todo.completed ? 'done' : '' %>"
+                                    title="<%= todo.completed ? 'Mark incomplete' : 'Mark complete' %>">
+                                    <i class="fa <%= todo.completed ? 'fa-check-circle' : 'fa-circle-o' %>"></i>
+                                </button>
+                            </form>
+                            <div>
+                                <span class="task-text"><%= todo.task %></span>
+                                <% if (todo.hint) { %>
+                                    <p class="hint-text mb-0">
+                                        <i class="fa fa-lightbulb-o"></i><%= todo.hint %>
+                                        <span class="ai-badge">AI</span>
+                                    </p>
+                                <% } %>
+                                <p class="text-muted mb-0" style="font-size:0.75rem;">
+                                    <%= moment(todo.created_at).fromNow() %>
+                                </p>
+                            </div>
+                        </div>
+                        <form method="POST" action="/todo/destroy" class="ml-2 flex-shrink-0">
+                            <input type="hidden" name="_key" value="<%= todo._id %>">
+                            <button type="submit" class="btn btn-link text-danger p-0" title="Delete">
+                                <i class="fa fa-trash-o"></i>
+                            </button>
+                        </form>
+                    </li>
+                <% }) %>
+            </ul>
+        <% } else { %>
+            <div class="text-center text-muted py-4">
+                <% if (q) { %>
+                    <i class="fa fa-search fa-2x mb-2 d-block"></i>
+                    No results found for "<%= q %>".
                 <% } else { %>
-                    <div class="text-center text-muted py-4">
-                        <i class="fa fa-check-square-o fa-2x mb-2 d-block"></i>
-                        No tasks yet — add one above.
-                    </div>
+                    <i class="fa fa-check-square-o fa-2x mb-2 d-block"></i>
+                    No tasks yet — add one above.
                 <% } %>
-
             </div>
-        </div>
+        <% } %>
+
     </div>
 </body>
 

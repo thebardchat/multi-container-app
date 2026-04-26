@@ -3,6 +3,7 @@ const bodyParse = require('body-parser');
 const app = require('express')();
 
 const FrontRouter = require('./routes/front');
+const { ensureSchema } = require('./services/memory');
 
 app.set('view engine', 'ejs');
 
@@ -22,7 +23,10 @@ app.locals.moment = require('moment');
 const db = require('./config/keys').mongoProdURI;
 mongoose
     .connect(db)
-    .then(() => console.log('MongoDB connected'))
+    .then(() => {
+        console.log('MongoDB connected');
+        ensureSchema();
+    })
     .catch(err => console.log(err));
 
 app.use(FrontRouter);
