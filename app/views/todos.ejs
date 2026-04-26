@@ -4,73 +4,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Todo App</title>
     <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .todo-done .task-text { text-decoration: line-through; color: #aaa; }
+        .todo-item { border-bottom: 1px solid #f1f1f1; padding: 10px 0; }
+        .todo-item:last-child { border-bottom: none; }
+        .check-btn { cursor: pointer; border: none; background: none; padding: 0 10px 0 0; font-size: 1.2rem; color: #28a745; }
+        .check-btn.done { color: #6c757d; }
+    </style>
 </head>
 
 <body>
-    <div class="container m-5 p-2 rounded mx-auto bg-light shadow">
-        
-        <!-- App title section -->
+    <div class="container m-5 p-2 rounded mx-auto bg-light shadow" style="max-width:640px;">
+
         <div class="row m-1 p-4">
-            <div class="col">
-                <div class="p-1 h1 text-primary text-center mx-auto display-inline-block">
-                    <u>Todo App</u>
-                </div>
+            <div class="col text-center">
+                <h1 class="text-primary"><u>Todo App</u></h1>
             </div>
         </div>
-            <div class="row m-1 p-3">
-                <div class="col col-11 mx-auto">
-                    <form method="POST" action="/" autocomplete="off">
-                        <div class="row m-1 p-3">
-                            <div class="col col-11 mx-auto">
-                                <div class="row bg-white rounded shadow-sm p-2 add-todo-wrapper align-items-center justify-content-center">
-                                    <div class="col">
-                                        <input class="form-control form-control-lg border-0 add-todo-input bg-transparent rounded" type="text" name="task" placeholder="Add new Task">
-                                    </div>
-                                    <div class="col-auto px-0 mx-0 mr-2">
-                                        <button type="submit" class="btn btn-primary">Add</button>
-                                    </div>
-                                </div>
-                            </div>
+
+        <div class="row m-1 p-3">
+            <div class="col">
+                <form method="POST" action="/" autocomplete="off">
+                    <div class="row bg-white rounded shadow-sm p-2 align-items-center">
+                        <div class="col">
+                            <input class="form-control form-control-lg border-0 bg-transparent"
+                                type="text" name="task" placeholder="Add new task…">
                         </div>
-                    </form>
-                    <hr>
-                    <div class="row">
-                        <div class="col-12">
-                            <% if(Object.keys(tasks).length> 0) { %>
-                                <ul class="nav flex-column">
-                                    <% tasks.forEach(todo=> { %>
-                                        <li class="nav-item">
-                                            <div class="d-flex justify-content-between py-1">
-                                                <div class="d-flex flex-row">
-                                                    <div>
-                                                        <%= todo.task %>
-                                                            <p class="text-muted"><small>
-                                                                    <%= moment(todo.created_at).fromNow() %>
-                                                                </small></p>
-                                                    </div>
-                                                </div>
-                                                <a href="javascript:;" onclick="this.children[0].submit()"
-                                                    class="text-danger">
-                                                    <form method="POST" action="/todo/destroy">
-                                                        <input type="hidden" name="_key" value="<%= todo._id %>" />
-                                                    </form>
-                                                    <i class="fa fa-trash-o"></i>
-                                                </a>
-                                            </div>
-                                        </li>
-                                        <% }) %>
-                                </ul>
-                                <% } else { %>
-                                    <div class="text-center"><strong>Please add some task.</strong></div>
-                                    <% }%>
+                        <div class="col-auto pr-2">
+                            <button type="submit" class="btn btn-primary">Add</button>
                         </div>
                     </div>
-                </div>
+                </form>
+
+                <hr>
+
+                <% if (tasks.length > 0) { %>
+                    <ul class="list-unstyled mb-0">
+                        <% tasks.forEach(todo => { %>
+                            <li class="todo-item d-flex justify-content-between align-items-start <%= todo.completed ? 'todo-done' : '' %>">
+                                <div class="d-flex align-items-start">
+                                    <form method="POST" action="/todo/toggle">
+                                        <input type="hidden" name="_key" value="<%= todo._id %>">
+                                        <button type="submit" class="check-btn <%= todo.completed ? 'done' : '' %>"
+                                            title="<%= todo.completed ? 'Mark incomplete' : 'Mark complete' %>">
+                                            <i class="fa <%= todo.completed ? 'fa-check-circle' : 'fa-circle-o' %>"></i>
+                                        </button>
+                                    </form>
+                                    <div>
+                                        <span class="task-text"><%= todo.task %></span>
+                                        <p class="text-muted mb-0"><small><%= moment(todo.created_at).fromNow() %></small></p>
+                                    </div>
+                                </div>
+                                <form method="POST" action="/todo/destroy" class="ml-2">
+                                    <input type="hidden" name="_key" value="<%= todo._id %>">
+                                    <button type="submit" class="btn btn-link text-danger p-0" title="Delete">
+                                        <i class="fa fa-trash-o"></i>
+                                    </button>
+                                </form>
+                            </li>
+                        <% }) %>
+                    </ul>
+                <% } else { %>
+                    <div class="text-center text-muted py-4">
+                        <i class="fa fa-check-square-o fa-2x mb-2 d-block"></i>
+                        No tasks yet — add one above.
+                    </div>
+                <% } %>
+
             </div>
         </div>
     </div>

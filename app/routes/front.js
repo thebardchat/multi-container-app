@@ -3,32 +3,30 @@ const Todo = require('./../models/Todo');
 
 const router = express.Router();
 
-// Home page route
 router.get('/', async (req, res) => {
-
-    const todos = await Todo.find()
-    res.render("todos", {
-        tasks: (Object.keys(todos).length > 0 ? todos : {})
-    });
+    const todos = await Todo.find().sort({ created_at: -1 });
+    res.render("todos", { tasks: todos });
 });
 
-// POST - Submit Task
-router.post('/', (req, res) => {
-    const newTask = new Todo({
-        task: req.body.task
-    });
-
-    newTask.save()
-    .then(task => res.redirect('/'))
-    .catch(err => console.log(err));
-});
-
-// POST - Destroy todo item
-router.post('/todo/destroy', async (req, res) => {
-    const taskKey = req.body._key;
-    const err = await Todo.findOneAndRemove({_id: taskKey})
+router.post('/', async (req, res) => {
+    const task = req.body.task && req.body.task.trim();
+    if (!task) return res.redirect('/');
+    await new Todo({ task }).save().catch(err => console.log(err));
     res.redirect('/');
 });
 
+router.post('/todo/toggle', async (req, res) => {
+    const todo = await Todo.findById(req.body._key);
+    if (todo) {
+        todo.completed = !todo.completed;
+        await todo.save();
+    }
+    res.redirect('/');
+});
+
+router.post('/todo/destroy', async (req, res) => {
+    await Todo.findByIdAndDelete(req.body._key).catch(err => console.log(err));
+    res.redirect('/');
+});
 
 module.exports = router;
